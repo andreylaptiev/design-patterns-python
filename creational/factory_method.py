@@ -18,12 +18,14 @@ class Auto:
 
 
 class Body(Auto, ABC):
+    @staticmethod
     @abstractmethod
     def create_detail() -> Detail:
         pass
 
 
 class DoorCreator(Body):
+    @staticmethod
     def create_detail() -> Detail:
         return Door()
 
