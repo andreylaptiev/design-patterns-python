@@ -12,14 +12,18 @@ class Detail(ABC):
         pass
 
 
-class Auto(ABC):
+# agregate class
+class Auto:
+    pass
+
+
+class Body(Auto, ABC):
     @abstractmethod
-    def create_detail(self) -> Detail:
+    def create_detail() -> Detail:
         pass
 
 
-class Body(Auto):
-    @staticmethod
+class DoorCreator(Body):
     def create_detail() -> Detail:
         return Door()
 
@@ -33,10 +37,6 @@ class Door(Detail):
 
 
 if __name__ == '__main__':
-    door = Body.create_detail()
+    door = DoorCreator.create_detail()
     door.create()
     door.to_paint()
-    # print(type(door))
-    print(isinstance(door, Door))
-    print(type(door))
-    print(door)
