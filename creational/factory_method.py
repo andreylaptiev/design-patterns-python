@@ -23,6 +23,11 @@ class Body(Auto, ABC):
     def create_detail() -> Detail:
         pass
 
+    def install(self):
+        product = self.create_detail()
+        result = f'{product.create()} and now successfully installed'
+        return result
+
 
 class DoorCreator(Body):
     @staticmethod
@@ -32,13 +37,27 @@ class DoorCreator(Body):
 
 class Door(Detail):
     def create(self):
-        print('Door is created')
+        result = 'Door is created'
+        return result
 
     def to_paint(self):
-        print('Door is painted')
+        result = 'Door is painted'
+        return result
+
+
+def client_code(creator: Body):
+    product = creator.create_detail()
+    print(f'''New detail processing:
+          {product.create()},
+          {product.to_paint()},
+          {Body.install(creator)}'''
+          )
+    return None
 
 
 if __name__ == '__main__':
-    door = DoorCreator.create_detail()
-    door.create()
-    door.to_paint()
+    client_code(DoorCreator)
+    # door = DoorCreator.create_detail()
+    # door.create()
+    # door.to_paint()
+    # Body.install(DoorCreator)
