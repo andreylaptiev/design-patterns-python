@@ -23,9 +23,9 @@ class Body(Auto, ABC):
     def create_detail() -> Detail:
         pass
 
-    def install(self):
-        product = self.create_detail()
-        result = f'{product.create()} and now successfully installed'
+    def install_detail(self):
+        detail = self.create_detail()
+        result = f'{detail.create()} and now successfully installed'
         return result
 
 
@@ -46,13 +46,12 @@ class Door(Detail):
 
 
 def client_code(creator: Body):
-    product = creator.create_detail()
-    print(f'''New detail processing:
-          {product.create()},
-          {product.to_paint()},
-          {Body.install(creator)}'''
-          )
-    return None
+    detail = creator.create_detail()
+    detail_lifeline = f'''Detail lifeline:
+        {detail.create()},
+        {detail.to_paint()},
+        {Body.install_detail(creator)}'''
+    print(detail_lifeline)
 
 
 if __name__ == '__main__':
