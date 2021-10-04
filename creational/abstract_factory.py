@@ -30,20 +30,19 @@ class Bolt(ABC):
 
 class CastDisk(Disk):
     def to_paint(self):
-        print('Successfully painted')
+        return 'Disk is successfully painted'
 
 
 class CastDiskTire(Tire):
     def get_from_warehouse(self):
-        print('Tire is now available')
+        return 'Tire is now available'
 
 
 class CastDiskBolt(Bolt):
     def count_quantity(self):
-        print('You need 4 bolts')
+        return 'You need 4 bolts'
 
 
-# interface
 class WheelFactory(ABC):
     @abstractmethod
     def create_disk():
@@ -72,20 +71,13 @@ class CastWheelFactory(WheelFactory):
         return CastDiskBolt()
 
 
-class Application:
-    pass
-    # def create_wheel(self):
-    #     pass
-
-    # def to_balane_wheel():
-    #     pass
-
-
-def client_code(factory):
+def client_code(factory: WheelFactory):
     disk = factory.create_disk()
     tire = factory.create_tire()
     bolt = factory.create_bolt()
-    print(disk.check_quality())
+    print(disk.to_paint())
+    print(tire.get_from_warehouse())
+    print(bolt.count_quantity())
 
 
 if __name__ == '__main__':
