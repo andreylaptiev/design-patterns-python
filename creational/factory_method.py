@@ -20,7 +20,7 @@ class Auto:
 class Body(Auto, ABC):
     @staticmethod
     @abstractmethod
-    def create_detail() -> Detail:
+    def create_detail():
         pass
 
     def install_detail(self):
@@ -31,7 +31,7 @@ class Body(Auto, ABC):
 
 class DoorCreator(Body):
     @staticmethod
-    def create_detail() -> Detail:
+    def create_detail():
         return Door()
 
 
