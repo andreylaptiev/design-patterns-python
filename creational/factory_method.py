@@ -56,7 +56,3 @@ def client_code(creator: Body):
 
 if __name__ == '__main__':
     client_code(DoorCreator)
-    # door = DoorCreator.create_detail()
-    # door.create()
-    # door.to_paint()
-    # Body.install(DoorCreator)
