@@ -45,7 +45,7 @@ class Door(Detail):
         return result
 
 
-def client_code(creator: Body):
+def client_code(creator):
     detail = creator.create_detail()
     detail_lifeline = f'''Detail lifeline:
         {detail.create()},
