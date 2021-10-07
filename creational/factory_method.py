@@ -2,57 +2,65 @@ from abc import ABC, abstractmethod
 
 
 # interface
-class Detail(ABC):
+class Tool(ABC):
     @abstractmethod
-    def create(self):
+    def draw_line(self):
         pass
 
     @abstractmethod
-    def to_paint(self):
+    def draw_picture(self):
         pass
 
 
-# agregate class
-class Auto:
-    pass
-
-
-class Body(Auto, ABC):
-    @staticmethod
+# Creator abstract class
+class Creator(ABC):
     @abstractmethod
-    def create_detail():
+    def create_tool() -> Tool:
         pass
 
-    def install_detail(self):
-        detail = self.create_detail()
-        result = f'{detail.create()} and now successfully installed'
+
+# Concrete Creator 1
+class PensilCreator(Creator):
+    def create_tool(self) -> Tool:
+        return Pensil()
+
+
+# Concrete Creator 1 return object class
+class Pensil(Tool):
+    def draw_line(self):
+        result = 'Pensil is drawing line'
+        return result
+
+    def draw_picture(self):
+        result = 'Pensil is drawing picture'
         return result
 
 
-class DoorCreator(Body):
-    @staticmethod
-    def create_detail():
-        return Door()
+# Concrete Creator 2
+class PenCreator(Creator):
+    def create_tool(self) -> Tool:
+        return Pen()
 
 
-class Door(Detail):
-    def create(self):
-        result = 'Door is created'
+# Concrete Creator 2 return object class
+class Pen(Tool):
+    def draw_line(self):
+        result = 'Pen is drawing line'
         return result
 
-    def to_paint(self):
-        result = 'Door is painted'
+    def draw_picture(self):
+        result = 'Pen is drawing picture'
         return result
 
 
+# Client Code
 def client_code(creator):
-    detail = creator.create_detail()
-    detail_lifeline = f'''Detail lifeline:
-        {detail.create()},
-        {detail.to_paint()},
-        {Body.install_detail(creator)}'''
-    print(detail_lifeline)
+    product = creator.create_tool()
+    product_draw_line = product.draw_line()
+    product_draw_picture = product.draw_picture()
+    print(product_draw_line)
+    print(product_draw_picture)
 
 
 if __name__ == '__main__':
-    client_code(DoorCreator)
+    client_code(PensilCreator())
