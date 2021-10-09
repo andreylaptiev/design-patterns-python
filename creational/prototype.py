@@ -1,4 +1,11 @@
+from abc import ABC, abstractmethod
 import copy
+
+
+class Prototype(ABC):
+    @abstractmethod
+    def clone():
+        pass
 
 
 class Auto:
@@ -11,8 +18,14 @@ class Auto:
         new.__dict__.update(self.__dict__)
         return new
 
+    def clone(self):
+        clone = copy.copy(self)
+        return clone
+
 
 if __name__ == '__main__':
     auto = Auto(4, True)
-    auto_copy = copy.copy(auto)
-    print(auto_copy)
+    auto_copy = auto.clone()
+    # auto_copy = copy.copy(auto)
+    print(auto.__dict__)
+    print(auto_copy.__dict__)
