@@ -49,12 +49,12 @@ class Drink:
 
 # special type of drink
 class SpecialGlassedJuice(Drink):
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def make_drink(self):
-        special_drink = f'''Special glassed juice.\
-            {self.maker.set_bottle_material()}.\
+        special_drink = f'''Special glassed juice. \
+            {self.maker.set_bottle_material()}. \
             {self.maker.set_taste()}'''.replace('  ', '')
         return special_drink
 
