@@ -69,7 +69,7 @@ class Adapter(Vegetable):
             return f'{self.name} is not a vegetable'
 
 
-# Client works via Vegetable class interface
+# Client cooks salad via Vegetable class interface
 def client_code(vegetable: VegetableSalad):
     check_veg_is_veg = vegetable.is_vegetable()
     prepare_veg = vegetable.cut_vegetable()
@@ -84,11 +84,11 @@ def client_code(vegetable: VegetableSalad):
 if __name__ == '__main__':
     client_code(Vegetable('Tomato'))
 
-    # Fruit class object implements Fruit class interface
+    # Create Fruit and pass it to Adapter object
     fruit = Fruit('Apple')
     adapter = Adapter(fruit)
 
-    # Fruit class object implements Vegetable class interface via Adapter class
+    # Fruit acts like Vegetable
     check_fruit_is_veg = adapter.is_vegetable()
     prepare_fruit = adapter.cut_vegetable()
     cook_fruit = adapter.add_to_salad()
