@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 
-# interface
-class CompanyWorker(ABC):
+# abstract class
+class CompanyComponent(ABC):
     @abstractmethod
     def do_work(self):
         pass
@@ -11,10 +11,15 @@ class CompanyWorker(ABC):
     def get_salary(self):
         pass
 
-    def add(self, employee):
+    def get_composite(self):
+        return None
+
+    @abstractmethod
+    def add(self, component):
         pass
 
-    def remove(self, employee):
+    @abstractmethod
+    def remove(self, component):
         pass
 
     @property
@@ -26,8 +31,8 @@ class CompanyWorker(ABC):
         self._parent = parent
 
 
-# basic component
-class Employee(CompanyWorker):
+# primitive component
+class Employee(CompanyComponent):
     def __init__(self, name: str, salary: str):
         self.name = name
         self.salary = salary
@@ -38,19 +43,28 @@ class Employee(CompanyWorker):
     def get_salary(self):
         print(f'{self.name} salary is {self.salary}')
 
+    def add(self, component: CompanyComponent):
+        raise Exception('This is not a composite')
 
-# main composite class
-class CompanyComposite(CompanyWorker):
+    def remove(self, component: CompanyComponent):
+        raise Exception('This is not a composite')
+
+
+# base composite component
+class CompanyComposite(CompanyComponent):
     def __init__(self):
         self._workers = []
 
-    def add(self, employee):
-        self._workers.append(employee)
-        employee.parent = self
+    def get_composite(self):
+        return self
 
-    def remove(self, employee):
-        self._workers.remove(employee)
-        employee.parent = None
+    def add(self, component: CompanyComponent):
+        self._workers.append(component)
+        component.parent = self
+
+    def remove(self, component: CompanyComponent):
+        self._workers.remove(component)
+        component.parent = None
 
     def do_work(self):
         results = []
@@ -65,59 +79,61 @@ class CompanyComposite(CompanyWorker):
         return results
 
 
-# composite class 1
+# composite component for all office workers
 class OfficeComposite(CompanyComposite):
     def __init__(self):
         super().__init__()
 
 
-# composite class 2
+# composite component for accounting workers
 class AccountingComposite(OfficeComposite):
     def __init__(self):
         super().__init__()
 
 
-# client code for single component
-def client_code_component(component):
+# client code to work with primitive components
+def client_code_primitive(component: CompanyComponent):
     component.do_work()
     component.get_salary()
     print('')
 
 
-# client code for composite
-def client_code_composite(composite):
-    composite.do_work()
+# client code to work with composite components
+def client_code_composite(component: CompanyComponent):
+    component.do_work()
     print('')
-    composite.get_salary()
+    component.get_salary()
 
 
 def main():
-    component = Employee('Boss', '10000$')
-    client_code_component(component)
+    primitive_component = Employee('Boss', '10000$')
+    client_code_primitive(primitive_component)
 
-    # create and add accounting workers to composite
-    accounting_composite = AccountingComposite()
-
+    # create and add primitive components (accounting workers) to composite component
     head_accountant = Employee('Head Accountant', '5000$')
     assistant_accountant = Employee('Assistant Accountant', '2500$')
 
-    accounting_composite.add(head_accountant)
-    accounting_composite.add(assistant_accountant)
+    accounting_composite = AccountingComposite()
 
-    # composite contains all office workers
-    office_composite = OfficeComposite()
+    if accounting_composite.get_composite():
+        accounting_composite.add(head_accountant)
+        accounting_composite.add(assistant_accountant)
 
+    # office composite component contains all primitive and composite components (all office workers)
     receptionist = Employee('Receptionist', '1500$')
 
-    office_composite.add(accounting_composite)
-    office_composite.add(receptionist)
+    office_composite = OfficeComposite()
 
-    # global composite
-    company_composite = CompanyComposite()
+    if office_composite.get_composite():
+        office_composite.add(accounting_composite)
+        office_composite.add(receptionist)
 
-    company_composite.add(office_composite)
+    # base composite component contains all components of the company
+    composite_component = CompanyComposite()
 
-    client_code_composite(company_composite)
+    composite_component.add(office_composite)
+
+    client_code_composite(composite_component)
 
 
 if __name__ == '__main__':
