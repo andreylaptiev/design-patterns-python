@@ -20,50 +20,38 @@ class Unique:
         self._color = color
         self._flyweight = flyweight
 
-    @property
-    def model(self):
-        return self._model
-
-    @property
-    def color(self):
-        return self._color
-
     def import_new_car(self):
         new_car = (f'Imported new {self._flyweight.vehicle_type} {self._flyweight.brand}. '
                    f'Model: {self._model}, Color: {self._color}')
         return new_car
 
 
-# factory creates new objects
+# factory gets objects from its list or creates new
 class Factory:
-    available_models = []
+    available_cars = []
 
-    # def __init__(self, flyweight: Flyweight, unique: Unique):
-    #     self._car_info = [flyweight.brand, flyweight.vehicle_type, unique.model, unique.color]
-    #     self.__class__.available_models.append(self._car_info)
-
-    @classmethod
-    def get_model(cls, brand='LADA', vehicle_type='Auto', model=None, color=None):
-        model = [brand, vehicle_type, model, color]
+    def get_car(self, model, color, brand='LADA', vehicle_type='Auto'):
+        car = [brand, vehicle_type, model, color]
         flyweight = Flyweight()
 
-        if model not in cls.available_models:
-            cls.available_models.append(model)
-            return Unique(flyweight, model, color)
+        if car not in self.__class__.available_cars:
+            self.__class__.available_cars.append(car)
+            new_car = Unique(flyweight, model, color)
+            return new_car.import_new_car()
 
-        return model
+        return car
 
 
-# Shop is a client
+# Shop is a client and works via factory
 class Shop:
     def __init__(self, factory: Factory):
         self._factory = factory
 
-    def get_available_car(self, car_info):
-        return self._factory.get_model(car_info)
+    def get_available_car(self, model, color):
+        return self._factory.get_car(model, color)
 
 
-# check new car import
+# check how Flyweight class and Unique class work together
 def client_code_import_car():
     flyweight = Flyweight()
     unique = Unique(flyweight, '2107', 'green')
@@ -72,21 +60,24 @@ def client_code_import_car():
     print(import_car)
 
 
-# check how factory gets available car and creates new car
+# check how factory gets available car from its list or creates a new car
 def client_code_get_car():
-    # Add new available car to factory list
-    available_car = ['LADA', 'Auto', '2107', 'green']
-    Factory.available_models.append(available_car)
+    # Add a car to the factory list of available cars
+    car = ['LADA', 'Auto', '2105', 'blue']
+    Factory.available_cars.append(car)
 
     factory = Factory()
     shop = Shop(factory)
 
-    # get a car from available and create new
-    get_available_car = ['LADA', 'Auto', '2107', 'green']
-    create_new_car = ['Volga', 'Auto', '24', 'green']
+    # shop requests available car
+    available_car = ['2105', 'blue']
+    car1 = shop.get_available_car(model=available_car[0], color=available_car[1])
+    print(car1)
 
-    shop.get_available_car(get_available_car)
-    shop.get_available_car(create_new_car)
+    # shop requests unavailable car and factory creates it
+    new_car = ['2101', 'white']
+    car2 = shop.get_available_car(model=new_car[0], color=new_car[1])
+    print(car2)
 
 
 def main():
