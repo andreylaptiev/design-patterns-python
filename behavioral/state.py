@@ -94,7 +94,9 @@ def client_code():
     print('\nEvening...')
 
     evening_state = TiredState()
-    human.change_state(evening_state)
+    evening_state.human = human
+    evening_state.human.change_state(evening_state)
+    # human.change_state(evening_state)
 
     human.do_work()
     human.relax()
